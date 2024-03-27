@@ -76,3 +76,41 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     }
 }
 ````
+
+## Creando DTO
+
+Crearemos un `DTO` para trabajar con los mensajes que nos llegan del frontEnd:
+
+````java
+public record ChatMessage(String message, String user) {
+}
+````
+
+## Creando controlador
+
+````java
+
+@Controller
+public class WebSocketController {
+
+    /**
+     * @DestinationVariable, anotación que indica que un parámetro de método debe estar
+     * vinculado a una variable de plantilla en una cadena de plantilla de destino.
+     * Compatible con métodos de manejo de mensajes como @MessageMapping.
+     * <p>
+     * Siempre se requiere una variable de plantilla @DestinationVariable.
+     */
+    @MessageMapping("/chat/{roomId}")
+    @SendTo("/topic/{roomId}") // A dónde vamos a redireccionar
+    public ChatMessage chat(@DestinationVariable String roomId, ChatMessage message) {
+        return message;
+    }
+}
+````
+
+## Ejecutando aplicación
+
+Si hasta este punto ejecutamos la aplicación y accedemos al endpoint `http://localhost:3000/chat-socket`, observaremos
+lo siguiente:
+
+![run application](./assets/01.run-application.png)
