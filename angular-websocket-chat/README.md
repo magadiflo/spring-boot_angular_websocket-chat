@@ -33,7 +33,9 @@ export class ChatService {
 
   private stompClient: any;
 
-  constructor() { }
+  constructor() {
+    this.initConnectionSocket();
+  }
 
   public initConnectionSocket(): void {
     const url = '//localhost:3000/chat-socket'; //* Conexión TCP, no es conexión HTTP
@@ -65,3 +67,72 @@ export interface ChatMessage {
   user: string;
 }
 ````
+
+## Solucionando mensaje de error
+
+El siguiente error es por que, la librería `@stomp/stompjs` está diseñada para el servidor y nosotros lo estamos consumiendo desde un cliente de `Angular`. 
+
+```bash
+Uncaught ReferenceError: global is not defined
+    at node_modules/sockjs-client/lib/utils/browser-crypto.js 
+```
+
+Para solucionar el error, debemos decirle a Angular que tome la configuración como un servidor.
+
+## Solucionando el error "Uncaught ReferenceError: global is not defined"
+
+Necesitamos indicarle a la librería de Stomp que estamos consumiendo la librería desde un cliente.
+
+Para eso, en el archivo `index.html` agregamos el siguiente script:
+```typescript
+<script>
+  //* Con esto le indicamos que la librería lo estamos consumiendo desde un cliente
+  var global = global || window;
+</script>
+```
+
+## Componente de chat
+
+```html
+<div class="container mt-5">
+  <div class="chat-container p-3 bg-color">
+    <ul class="chat-box" id="chat-box">
+      <li class="message received">Hola, ¿cómo estás?</li>
+      <li class="message sent">¡Hola! Estoy bien, ¿y tú?</li>
+      <li class="message received">Yo también estoy bien, gracias por preguntar.</li>
+      <li class="message sent">¿Tienes algún plan para hoy?</li>
+      <li class="message received">No aún, estoy pensando qué hacer.</li>
+      <li class="message sent">Podríamos salir a caminar si el clima es agradable.</li>
+      <li class="message received">¡Eso suena bien!</li>
+    </ul>
+    <div class="input-group pt-3">
+      <input type="text" id="message-input" class="form-control message-input" placeholder="Escribe tu mensaje aquí">
+      <button type="button" (click)="sendMessage()" class="btn btn-primary">Enviar</button>
+    </div>
+  </div>
+</div>
+```
+
+```typescript
+@Component({
+  selector: 'app-chat',
+  standalone: true,
+  imports: [],
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.scss'
+})
+export class ChatComponent implements OnInit {
+
+  private _chatService = inject(ChatService);
+
+  ngOnInit(): void {
+    this._chatService.joinRoom('estudiantes');
+  }
+
+  public sendMessage() {
+    const message: ChatMessage = { message: 'Buenos días', user: 'magadiflo' };
+    this._chatService.sendMessage('estudiantes', message);
+  }
+
+}
+```

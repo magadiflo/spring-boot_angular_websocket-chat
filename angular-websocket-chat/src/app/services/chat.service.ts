@@ -11,7 +11,9 @@ export class ChatService {
 
   private stompClient: any;
 
-  constructor() { }
+  constructor() {
+    this.initConnectionSocket();
+  }
 
   public initConnectionSocket(): void {
     const url = '//localhost:3000/chat-socket'; //* Conexión TCP, no es conexión HTTP
