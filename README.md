@@ -11,3 +11,7 @@ Tutorial tomado del canal de youtube de **Neiser Custodio**
 ## Panorama general
 
 ![panorama general](./assets/01.arquitectura-general.png)
+
+## Aplicación en funcionamiento
+
+![angular](./assets//02.chat.png)

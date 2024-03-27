@@ -1,16 +1,18 @@
 <div class="container mt-5">
+  <div class="alert alert-info">
+    <h5>Usuario: {{ userId }}</h5>
+  </div>
   <div class="chat-container p-3 bg-color">
     <ul class="chat-box" id="chat-box">
-      <li class="message received">Hola, ¿cómo estás?</li>
-      <li class="message sent">¡Hola! Estoy bien, ¿y tú?</li>
-      <li class="message received">Yo también estoy bien, gracias por preguntar.</li>
-      <li class="message sent">¿Tienes algún plan para hoy?</li>
-      <li class="message received">No aún, estoy pensando qué hacer.</li>
-      <li class="message sent">Podríamos salir a caminar si el clima es agradable.</li>
-      <li class="message received">¡Eso suena bien!</li>
+      <!-- <li class="message received"></li>
+      <li class="message sent"></li> -->
+      @for (message of messageList; track $index) {
+      <li class="message" [ngClass]="message.message_side">{{ message.message }}</li>
+      }
     </ul>
     <div class="input-group pt-3">
-      <input type="text" id="message-input" class="form-control message-input" placeholder="Escribe tu mensaje aquí">
+      <input type="text" [formControl]="messageInput" id="message-input" class="form-control message-input"
+        placeholder="Escribe tu mensaje aquí">
       <button type="button" (click)="sendMessage()" class="btn btn-primary">Enviar</button>
     </div>
   </div>
