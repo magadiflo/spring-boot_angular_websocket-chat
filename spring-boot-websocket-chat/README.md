@@ -101,7 +101,7 @@ public class WebSocketController {
      * Siempre se requiere una variable de plantilla @DestinationVariable.
      */
     @MessageMapping("/chat/{roomId}")
-    @SendTo("/topic/{roomId}") // A dónde vamos a redireccionar
+    @SendTo("/topic/{roomId}") // A dónde vamos a redireccionar. Canal de envío de los mensajes.
     public ChatMessage chat(@DestinationVariable String roomId, ChatMessage message) {
         return message;
     }
