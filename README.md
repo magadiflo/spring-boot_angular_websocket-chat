@@ -6,3 +6,8 @@
 
 Tutorial tomado del canal de youtube de **Neiser Custodio**
 
+---
+
+## Panorama general
+
+![panorama general](./assets/01.arquitectura-general.png)
